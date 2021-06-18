@@ -191,19 +191,21 @@ foreach($members as $m) {
 	$samaccountname = isset($attr['samaccountname'][0]) ? $attr['samaccountname'][0] : "[no account name]";
 	
 	// extra attributen
-  // complete naam
+	// complete naam
 	$name = isset($attr['name'][0]) ? $attr['name'][0] : "[no employee ID]";
 	$name= utf8_decode($name); //utf voor speciale tekens in de naam
-  // voornaam
-  $firstname = isset($attr['givenname'][0]) ? $attr['givenname'][0] : "[no givenName]";
+	
+	// voornaam
+	$firstname = isset($attr['givenname'][0]) ? $attr['givenname'][0] : "[no givenName]";
 	$firstname= utf8_decode($firstname); //utf voor speciale tekens in de naam
-  //tussenvoegsel
-  $middlename = isset($attr['middlename'][0]) ? $attr['middlename'][0] : "";
-  $middlename= utf8_decode($middlename); //utf voor speciale tekens in de naam
+	
+	//tussenvoegsel
+	$middlename = isset($attr['middlename'][0]) ? $attr['middlename'][0] : "";
+	$middlename= utf8_decode($middlename); //utf voor speciale tekens in de naam
   
-  //achternaam
-  $lastname = isset($attr['sn'][0]) ? $attr['sn'][0] : "[no lastName]";
-  $lastname= utf8_decode($lastname); //utf voor speciale tekens in de naam
+	//achternaam
+	$lastname = isset($attr['sn'][0]) ? $attr['sn'][0] : "[no lastName]";
+	$lastname= utf8_decode($lastname); //utf voor speciale tekens in de naam
   
 	$mail = isset($attr['mail'][0]) ? $attr['mail'][0] : "[no email]";
 	$physicaldeliveryofficename = isset($attr['physicaldeliveryofficename'][0]) ? $attr['physicaldeliveryofficename'][0] : "[no Kantoor]";
@@ -219,7 +221,6 @@ foreach($members as $m) {
 	// mr in g etc
 	$Persoonlijketitel = isset($attr['personaltitle'][0]) ? $attr['personaltitle'][0] : ""; 
   
-	
 	//Attribuut Custom-data has different syntax because the '-' sign in the name.
 	${'Custom-data'} = isset($attr['Custom-data'][0]) ? $attr['Custom-data'][0] : "[no data]";
 		
@@ -306,7 +307,7 @@ $now= $now->format('Y-m-d H:i:s');
   // controleren of avatar aanwezig is.
   $avatar = '';
   $avatarapproved= 0;
-	$filename = 'D:\\inetpub\\intranet\\images\\comprofiler\\'. $samaccountname. '.png';
+	$filename = 'D:\\inetpub\\website\\images\\comprofiler\\'. $samaccountname. '.png';
 
 	if (file_exists($filename)) {
 		$avatar = $samaccountname. '.png';
