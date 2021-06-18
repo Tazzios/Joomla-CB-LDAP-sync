@@ -172,12 +172,10 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-
  
 // Iterate each member to get attributes
 $i = 1; // For counting our output
 foreach($members as $m) {
-	
 	
 	// Query a user's attributes using mydap_attributes(member_dn,keep)
 	// The member_dn is the step $m of this foreach
@@ -246,22 +244,21 @@ foreach($members as $m) {
 		
 		//Controleren of de gebruiker al bestaat in de database
 		$sql = "SELECT * FROM ".$Joomla_prefix ."_users WHERE USERNAME='$samaccountname'";
-		if(mysqli_num_rows($conn->query($sql)) > 0)
-		{
-  		echo "$i. $samaccountname Bestaat al <br>";
-      //account  activeren voor als iemand even uitdienst is geweest 
-      // emailadres bijwerken wil wel eens wijzigen indien mensen trouwen bv
-  		$sql = "UPDATE IGNORE ".$Joomla_prefix ."_comprofiler Ldap INNER JOIN ".$Joomla_prefix ."_users joomla ON Ldap.user_id=Joomla.id SET 
-  		joomla.block = 0,
-      joomla.email= '$mail',
-      joomla.name= '$name'
-  		WHERE joomla.USERNAME ='$samaccountname'";
+		if(mysqli_num_rows($conn->query($sql)) > 0) {
+			echo "$i. $samaccountname Bestaat al <br>";
+			//account  activeren voor als iemand even uitdienst is geweest 
+			// emailadres bijwerken wil wel eens wijzigen indien mensen trouwen bv
+			$sql = "UPDATE IGNORE ".$Joomla_prefix ."_comprofiler Ldap INNER JOIN ".$Joomla_prefix ."_users joomla ON Ldap.user_id=Joomla.id SET 
+			joomla.block = 0,
+			joomla.email= '$mail',
+			joomla.name= '$name'
+			WHERE joomla.USERNAME ='$samaccountname'";
       
-      if ($conn->query($sql) === TRUE) {
-  			echo "$i. $samaccountname account geactiveerd<br>";
-  		} else {
-  			echo "$i. $samaccountname Error account activeren: " . $sql . "<br>" . $conn->error;
-  		}
+			if ($conn->query($sql) === TRUE) {
+				echo "$i. $samaccountname account geactiveerd<br>";
+			} else {
+				echo "$i. $samaccountname Error account activeren: " . $sql . "<br>" . $conn->error;
+			}
     
 		}
 		else
@@ -295,30 +292,28 @@ foreach($members as $m) {
 	}
 
  
-$now = new DateTime();
-$now= $now->format('Y-m-d H:i:s');
+	$now = new DateTime();
+	$now= $now->format('Y-m-d H:i:s');
 	
 	
 	// Resultaat weergeven 
 	/*echo "$i. $samaccountname - $mail - $name - ${'Custom-data'} - $physicaldeliveryofficename - " . substr($telephonenumber, -3) . $now;*/
-		
-	// communitybuilder tabel bijwerken
 
-  // controleren of avatar aanwezig is.
-  $avatar = '';
-  $avatarapproved= 0;
+	// controleren of avatar aanwezig is.
+	$avatar = '';
+	$avatarapproved= 0;
 	$filename = 'D:\\inetpub\\website\\images\\comprofiler\\'. $samaccountname. '.png';
 
 	if (file_exists($filename)) {
 		$avatar = $samaccountname. '.png';
 		$avatarapproved = 1;
 	} else {
-	//$avatar = 'nophoto.png';
-  $avatar = NULL;	
-  $avatarapproved = 0;
+		//$avatar = 'nophoto.png';
+		$avatar = NULL;	
+		$avatarapproved = 0;
 	}
 
-
+	// communitybuilder tabel bijwerken
 	$sql = "update ignore ". $Joomla_prefix ."_comprofiler Ldap inner join ". $Joomla_prefix ."_users joomla on Ldap.user_id=Joomla.id SET 
 	Ldap.cb_kantoor= '$physicaldeliveryofficename', 
 	Ldap.cb_telefoonnummer='$telephonenumber',
@@ -326,32 +321,29 @@ $now= $now->format('Y-m-d H:i:s');
 	Ldap.cb_Data= '${'Custom-data'}',
 	ldap.cb_functiebenaming= '$title',
 	ldap.cb_persoonlijketitel= '$Persoonlijketitel',
-  ldap.firstname= '$firstname',
-  ldap.middlename= '$middlename',
-  ldap.cb_achternaam= '$lastname',
+	ldap.firstname= '$firstname',
+	ldap.middlename= '$middlename',
+	ldap.cb_achternaam= '$lastname',
 	ldap.cb_telnrkort = '" . substr($telephonenumber, -3) . "',
 	Ldap.avatar= '$avatar',
-  Ldap.avatarapproved= $avatarapproved,
+	Ldap.avatarapproved= $avatarapproved,
 	joomla.name= '$name'
 	WHERE joomla.USERNAME ='$samaccountname'";
   
 
-	
 
 	if ($conn->query($sql) === TRUE) {
-	  echo "<br>";
+		echo "<br>";
 	} else {
 		echo "$i. $samaccountname Error ldap gegevens bijwerken: " . $sql . "<br>" . $conn->error;
 	}
 	
-
  
 	$i++;
-	}
+}
  
 // Here you could run another mydap_members() if needed, merge with previous results, etc.
  
-
  
 // Here you can open a new connection with mydap_connect() if needed, such as to a different AD server
 
