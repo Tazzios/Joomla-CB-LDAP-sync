@@ -192,18 +192,22 @@ foreach($members as $m) {
 	// complete naam
 	$name = isset($attr['name'][0]) ? $attr['name'][0] : "[no employee ID]";
 	$name= utf8_decode($name); //utf voor speciale tekens in de naam
+	$name= str_replace("'","''",$name); // SQL escape 
 	
 	// voornaam
 	$firstname = isset($attr['givenname'][0]) ? $attr['givenname'][0] : "[no givenName]";
 	$firstname= utf8_decode($firstname); //utf voor speciale tekens in de naam
+	$firstname= str_replace("'","''",$firstname); // SQL escape 
 	
 	//tussenvoegsel
 	$middlename = isset($attr['middlename'][0]) ? $attr['middlename'][0] : "";
 	$middlename= utf8_decode($middlename); //utf voor speciale tekens in de naam
+	$middlename= str_replace("'","''",$middlename);	// SQL escape 
   
 	//achternaam
 	$lastname = isset($attr['sn'][0]) ? $attr['sn'][0] : "[no lastName]";
 	$lastname= utf8_decode($lastname); //utf voor speciale tekens in de naam
+	$lastname= str_replace("'","''",$lastname); // SQL escape 
   
 	$mail = isset($attr['mail'][0]) ? $attr['mail'][0] : "[no email]";
 	$physicaldeliveryofficename = isset($attr['physicaldeliveryofficename'][0]) ? $attr['physicaldeliveryofficename'][0] : "[no Kantoor]";
