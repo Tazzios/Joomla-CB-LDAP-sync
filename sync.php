@@ -38,7 +38,7 @@ function mydap_attributes($user_dn,$keep=true) {
 	if(empty($user_dn)) die('Error, no LDAP user specified');
  
 	// Disable pagination setting, not needed for individual attribute queries
-	ldap_control_paged_result($mydap,1);
+	//ldap_control_paged_result($mydap,1);
  
 	// Query user attributes
 	$results = (($keep) ? ldap_search($mydap,$user_dn,'cn=*',$keep) : ldap_search($mydap,$user_dn,'cn=*'))
@@ -107,7 +107,7 @@ function mydap_members($object_dn,$object_class='g') {
 		$pagesize = 1000;
 		$counter = "";
 		do {
-			ldap_control_paged_result($mydap,$pagesize,true,$counter);
+			//ldap_control_paged_result($mydap,$pagesize,true,$counter);
 			
 			// Query Container or Organizational Unit members
 			$results = ldap_search($mydap,$object_dn,'objectClass=user',array('sn')) or die('Error searching LDAP: '.ldap_error($mydap));
@@ -119,7 +119,7 @@ function mydap_members($object_dn,$object_class='g') {
 			// Pull the 'dn' from each result, append to output
 			foreach($members as $e) $output[] = $e['dn'];
  
-			ldap_control_paged_result_response($mydap,$results,$counter);
+			//ldap_control_paged_result_response($mydap,$results,$counter);
 		} while($counter !== null && $counter != "");
 	
 	// Invalid object_class specified
@@ -191,22 +191,22 @@ foreach($members as $m) {
 	// extra attributen
 	// complete naam
 	$name = isset($attr['name'][0]) ? $attr['name'][0] : "[no employee ID]";
-	$name= utf8_decode($name); //utf voor speciale tekens in de naam
+	$name= mb_convert_encoding($name, 'ISO-8859-1', 'UTF-8'); //utf voor speciale tekens in de naam
 	$name= str_replace("'","''",$name); // SQL escape 
 	
 	// voornaam
 	$firstname = isset($attr['givenname'][0]) ? $attr['givenname'][0] : "[no givenName]";
-	$firstname= utf8_decode($firstname); //utf voor speciale tekens in de naam
+	$firstname= mb_convert_encoding($firstname, 'ISO-8859-1', 'UTF-8'); //utf voor speciale tekens in de naam
 	$firstname= str_replace("'","''",$firstname); // SQL escape 
 	
 	//tussenvoegsel
 	$middlename = isset($attr['middlename'][0]) ? $attr['middlename'][0] : "";
-	$middlename= utf8_decode($middlename); //utf voor speciale tekens in de naam
+	$middlename= mb_convert_encoding($middlename, 'ISO-8859-1', 'UTF-8'); //utf voor speciale tekens in de naam
 	$middlename= str_replace("'","''",$middlename);	// SQL escape 
   
 	//achternaam
 	$lastname = isset($attr['sn'][0]) ? $attr['sn'][0] : "[no lastName]";
-	$lastname= utf8_decode($lastname); //utf voor speciale tekens in de naam
+	$lastname= mb_convert_encoding($lastname, 'ISO-8859-1', 'UTF-8'); //utf voor speciale tekens in de naam
 	$lastname= str_replace("'","''",$lastname); // SQL escape 
   
 	$mail = isset($attr['mail'][0]) ? $attr['mail'][0] : "[no email]";
@@ -214,11 +214,11 @@ foreach($members as $m) {
 	$telephonenumber = isset($attr['telephonenumber'][0]) ? $attr['telephonenumber'][0] : "000";
 		
 	$department = isset($attr['department'][0]) ? $attr['department'][0] : "[no department]";
-	$department= utf8_decode($department); //utf voor speciale tekens in de naam
+	$department= mb_convert_encoding($department, 'ISO-8859-1', 'UTF-8'); //utf voor speciale tekens in de naam
 	
 	//functiebenaming
 	$title = isset($attr['title'][0]) ? str_replace('medewerker ','Mdw. ',$attr['title'])[0] : "[no title]";
-	$title = utf8_decode(str_replace(' medewerker','',$title));
+	$title = mb_convert_encoding(str_replace(' medewerker','',$title), 'ISO-8859-1', 'UTF-8');
 	
 	// mr in g etc
 	$Persoonlijketitel = isset($attr['personaltitle'][0]) ? $attr['personaltitle'][0] : ""; 
